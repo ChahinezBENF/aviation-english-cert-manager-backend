@@ -5,7 +5,7 @@ const authenticateToken = require('../middleware/authenticateToken');
 const authorizeRoles = require('../middleware/authorizeRoles');
 
 
-// Routes for users
+// Routes for users with author in enabled
 // router.get('/', authenticateToken, authorizeRoles('hr'),userController.getAllUsers);
 // router.post('/', authenticateToken, authorizeRoles('hr'), userController.createUser);
 // router.get('/:id', authenticateToken, userController.getUserById);
