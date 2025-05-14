@@ -88,7 +88,7 @@ My project follows standard naming conventions across all files, functions, vari
 - **Variables** (`const roleField` , `const existingAirport` , `const token = req.header()` )
 
 ## 5.Ensure that the program runs without errors :
-My program runs without errors, and I have tested API requests, database connections, error handling, and validation to ensure smooth functionality.
+My program runs without errors, and I have tested API requests, database connections, error handling, and validation to ensure smooth functionality.Examples:
 
 - **Successful API Requests** (`POST http://localhost:5050/auth/login` => `{"email": "carol.danvers@example.com","password":"captainmarvel"}` => `{ "id":"682403445bfb05dcf84a10d2","token": eyJhbGciOiJIUzI1NiI....."}` )
 - **- Error Handling** (`{"error": "Invalid email or password"` )
@@ -101,10 +101,10 @@ My project demonstrates strong effort in creativity, presentation, and user expe
 - **Presentation :** - Clean project structure with separate frontend and backend README files.
 - **- User Experience:** Thoughtful error handling and intuitive API responses 
 
-
 ---
 #  II. (12%) Core JavaScript :
-## 1.
+## 1.Demonstrate proper usage of ES6 syntax and tools: 
+
 ## 2.
 ## 3.
 ## 4.
