@@ -40,7 +40,7 @@ This is a web application designed to manage ICAO English certifications for air
 - **Back-End**: Node.js, Express
 - **Database**: MongoDB (controller data, certification status, test history, etc.)
 - **Authentication**: JWT (role-based access)
-- **Dependencies**:  dotenv, method-override
+- **Dependencies**:  dotenv, method-override, cors
 
 ## 🔧 Project Structure for Backend
 ```plaintext
@@ -237,6 +237,7 @@ I Used Mongoose to manage schemas, validations, and queries
 
 - **Authorization :** Role-based access control restricts specific routes to authorized users (`middleware/authorizeRoles` ).
 ---
+
 ## Frontend repository Link: https://github.com/ChahinezBENF/aviation-english-cert-manager-react
 ## Frontend deployement Link: https://icao-english-cert.onrender.com 
 
