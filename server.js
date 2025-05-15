@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth');
 const cors = require('cors');
 
 
+
 // Import route modules
 const airportRoutes = require('./routes/airport');
 const userRoutes = require('./routes/user');
@@ -29,6 +30,7 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/airports', airportRoutes);
 app.use('/users', userRoutes);
+
 //auth route
 app.use('/auth', authRoutes);
 

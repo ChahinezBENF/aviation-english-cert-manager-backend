@@ -37,10 +37,10 @@ This is a web application designed to manage ICAO English certifications for air
 ```
 ## 🔧 Tech Stack
 
-- **Front-End**:  CSS, JavaScript, React
 - **Back-End**: Node.js, Express
 - **Database**: MongoDB (controller data, certification status, test history, etc.)
 - **Authentication**: JWT (role-based access)
+- **Dependencies**:  dotenv, method-override
 
 ## 🔧 Project Structure for Backend
 ```plaintext
@@ -237,5 +237,18 @@ I Used Mongoose to manage schemas, validations, and queries
 
 - **Authorization :** Role-based access control restricts specific routes to authorized users (`middleware/authorizeRoles` ).
 ---
-# Frontend repository Link: https://github.com/ChahinezBENF/aviation-english-cert-manager-react
-# Frontend deployement Link: https://icao-english-cert.onrender.com 
+## Frontend repository Link: https://github.com/ChahinezBENF/aviation-english-cert-manager-react
+## Frontend deployement Link: https://icao-english-cert.onrender.com 
+
+---
+# 🚀 Future Enhancements : 
+
+## Test History
+The test history will be dynamic—whenever a controller earns a certificate, it will be automatically recorded in their test history.
+
+## Certification database
+create a database to store a certifications earned by employees so the HR can manageit easly and the employees can downloadit 
+
+## Certification Database
+A dedicated database will be created to store all certifications earned by employees. This will enable HR to manage them efficiently while allowing employees to download their certificates as needed.
+
