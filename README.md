@@ -91,35 +91,151 @@ My project follows standard naming conventions across all files, functions, vari
 My program runs without errors, and I have tested API requests, database connections, error handling, and validation to ensure smooth functionality.Examples:
 
 - **Successful API Requests** (`POST http://localhost:5050/auth/login` => `{"email": "carol.danvers@example.com","password":"captainmarvel"}` => `{ "id":"682403445bfb05dcf84a10d2","token": eyJhbGciOiJIUzI1NiI....."}` )
-- **- Error Handling** (`{"error": "Invalid email or password"` )
-- **- Database Connectivity** (`{Connected to MongoDB via Mongoose` )
+- **Error Handling** (`{"error": "Invalid email or password"` )
+- **Database Connectivity** (`{Connected to MongoDB via Mongoose` )
 
 ## 6.Level of effort displayed in creativity, presentation, and user experience:
 My project demonstrates strong effort in creativity, presentation, and user experience. I have designed it to be user-friendly, with clear navigation, efficient backend structure, and well-documented features:
 
 - **Creativity :**  Custom features like role-based access control.
 - **Presentation :** - Clean project structure with separate frontend and backend README files.
-- **- User Experience:** Thoughtful error handling and intuitive API responses 
+- **User Experience:** Thoughtful error handling and intuitive API responses 
 
 ---
 #  II. (12%) Core JavaScript :
 ## 1.Demonstrate proper usage of ES6 syntax and tools: 
+I utilized many ES6 features and tools, as shown in the following examples:
 
-## 2.
-## 3.
-## 4.
-## 5.
-## 6.
+- **Using async/await** 
+```javascript
+const getAllUsers = async () => {
+  try {   .........
+  } catch (error) {
+   ................  }
+};
+```
+- **Object proprety** 
+```javascript
+{ id: user._id, role: user.role, token: token }
+```
+- **Modules** 
+```javascript
+require('dotenv').config();
+```
+
+## 2.Use functions and classes to adhere to the DRY principle:
+I provided code adheres to the DRY principle in several ways, example:
+
+- **Dynamic Role Updates** 
+```javascript
+await Airport.findOneAndUpdate(
+    { code: savedUser.airportCode },
+    { $addToSet: { [updateField]: savedUser._id } }
+  );
+```
+- **Using try/catch** 
+```javascript
+exports.getUserById = async (req, res) => {
+  try {............} catch (err) {
+    ............}};
+```
+- **Reusabale Function** 
+```javascript
+function authorizeRoles(...roles) { .............. }
+```
+
+## 3.Use Promises and async/await, where appropriate:
+My project demonstrates appropriate use of Promises and async/await to handle asynchronous operations effectively, ensuring clean, readable, and maintainable code. Below are examples from my code:
+
+- **Using Promise.all for Parallel Execution** 
+```javascript
+await User.deleteMany({}); // Clear all users
+await Airport.deleteMany({}); // Clear all airports
+```
+- **Using try/catch** 
+```javascript
+const userData = await Promise.all([
+  { .............. }]),
+```
+
+## 4. Use Axios or Fetch to Retrieve Data from an API
+The application uses Mongoose for retrieving, creating, and updating data in the MongoDB database. While Axios or Fetch is not used in this version, Mongoose provides a similar functionality for database interactions. Example:
+```javascript
+const users = await User.find();
+``` 
+## 5.Use sound programming logic throughout the application:
+My code demonstrates sound programming logic by:
+
+### Structuring logic in reusable functions to avoid redundancy  ( authorizeRoles function).
+
+### Following DRY principles by encapsulating repeated logic in helper functions or well-defined workflows.
+
+### Using clear control flows, such as checking for user roles or updating nested fields in user objects:
+
+```javascript
+if (req.body.certificationLevel) {
+  updateData['certification.level'] = req.body.certificationLevel;
+  delete updateData.certificationLevel;
+}
+```
+### Avoiding hardcoded values and using dynamic values instead (req.user.role and req.params.id).
+
+## 6.Use appropriate exception handling.
+my application demonstrates effective exception handling using try/catch blocks 
 ---
 #  III. (9%) Database :
-## 1.
-## 2.
-## 3.
+## 1.Use MongoDB to create a database for your application:
+My application uses MangoDB with connection managed by Mangoose hosted on Atlas
+
+
+#### Example:
+```javascript
+mongoose.connect(process.env.ATLAS_URI, { dbName: 'icao_management' }).then(() => console.log('Connected to MongoDB'))
+```
+
+## 2.Apply appropriate indexes to your database collections:
+- **Airport Code Index :** Ensures quick searches for users by airport.
+- **Unique Email Index :** Prevents duplicate user emails.
+
+#### Examples:
+```javascript
+UserSchema.index({ airportCode: 1 });
+........
+email: {type: String, required: true, unique: true, match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+```
+
+## 3.Create reasonable schemas for your data by following data modeling best practices: 
+My  User and Pilot schemas organizes fields logically and enforces validation, plus incudes the pre-save hooks for password hashing and certification expiration calculation
+#### Example:
+```javascript
+const UserSchema = new mongoose.Schema({
+  email: { type: String, unique: true },
+  role: { type: String, enum: ['controller', 'pilot', 'hr'], default: 'controller' },
+  airportCode: { type: String },});
+```
 ---
 #  IV. (19%) Server :
-## 1.
-## 2.
-## 3.
-## 4.
+## 1.Create a RESTful API using Node and Express: 
+Built using Node.js and Express to manage users and airports with clear and consistent endpoints.
+## 2.Include API routes for all four CRUD operations:
+I creates APIs for Users/Airports/Authentication, examples:
+
+```javascript
+router.get('/', userController.getAllUsers);
+router.post('/', userController.createUser);
+router.get('/:id', userController.getUserById);
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser);
+```
+
+## 3.Utilize the native MongoDB driver or Mongoose to interface with your database:
+I Used Mongoose to manage schemas, validations, and queries
+
+## 4.Include at least one form of user authentication/authorization within the application: 
+
+- **Authentication :** JWT-based tokens ensure secure access(`middleware/authenticateToken` ).
+
+- **Authorization :** Role-based access control restricts specific routes to authorized users (`middleware/authorizeRoles` ).
 ---
-# Frontend repo Link: 
+# Frontend repository Link: https://github.com/ChahinezBENF/aviation-english-cert-manager-react
+# Frontend deployement Link: https://icao-english-cert.onrender.com 
