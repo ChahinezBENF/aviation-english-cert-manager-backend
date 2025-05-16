@@ -253,3 +253,10 @@ create a database to store a certifications earned by employees so the HR can ma
 ## Certification Database
 A dedicated database will be created to store all certifications earned by employees. This will enable HR to manage them efficiently while allowing employees to download their certificates as needed.
 
+
+# 📚 Resources Used
+
+- https://www.w3schools.com/js/default.asp
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript
+- https://mongoosejs.com/docs/api/query.html
+- https://jasonwatmore.com/nodejs-jwt-authentication-tutorial-with-example-api
