@@ -12,6 +12,10 @@ router.get('/:id', authenticateToken, userController.getUserById);
 router.put('/:id', authenticateToken, authorizeRoles('hr'), userController.updateUser);
 router.delete('/:id', authenticateToken, authorizeRoles('hr'),userController.deleteUser);
 
+//test routes
+router.post('/:id/schedule', authenticateToken, userController.addTestToSchedule);
+router.delete('/:id/schedule/:testId', authenticateToken, userController.cancelScheduledTest);
+
 // Routes for users without author
 // router.get('/', userController.getAllUsers);
 // router.post('/',  userController.createUser);

@@ -2,6 +2,7 @@ require('dotenv').config();
 const User = require('../models/user');
 const Airport = require('../models/airport');
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 
 // Controller logic
 exports.getAllUsers = async (req, res) => {
@@ -113,6 +114,80 @@ exports.deleteUser = async (req, res) => {
     res.status(200).json({ message: 'User deleted' });
   } catch (err) {
     res.status(500).json({ error: 'Error deleting user' });
+  }
+};
+
+// Manage ctests 
+exports.addTestToSchedule = async (req, res) => {
+  const { id: userId } = req.params;
+  const { testDate, testName } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    // Validate testDate and testName
+    if (!testDate || !testName) {
+      return res.status(400).json({ error: 'testDate and testName are required' });
+    }
+
+    // Prevent adding past dates
+    if (new Date(testDate) < new Date()) {
+      return res.status(400).json({ error: 'Test date must be in the future' });
+    }
+
+    const newTest = { testDate, testName };
+    user.testSchedule.push(newTest);
+    await user.save();
+
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ error: 'Error adding test to schedule', details: err.message });
+  }
+};
+
+exports.cancelScheduledTest = async (req, res) => {
+  const { id: userId, testId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    // Remove the test from testSchedule
+    user.testSchedule = user.testSchedule.filter(test => test._id.toString() !== testId);
+    await user.save();
+
+    res.status(200).json({ message: 'Scheduled test canceled successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Error canceling scheduled test', details: err.message });
+  }
+};
+
+exports.markTestAsCompleted = async (req, res) => {
+  const { id: userId } = req.params;
+  const { testId, resultLevel } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const testIndex = user.testSchedule.findIndex(test => test._id.toString() === testId);
+    if (testIndex === -1) return res.status(404).json({ error: 'Test not found in schedule' });
+
+    const completedTest = {
+      testDate: user.testSchedule[testIndex].testDate,
+      resultLevel,
+    };
+
+    // Move the test from schedule to history
+    user.testHistory.push(completedTest);
+    user.testSchedule.splice(testIndex, 1);
+
+    await user.save();
+
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ error: 'Error marking test as completed', details: err.message });
   }
 };
 

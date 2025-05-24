@@ -247,9 +247,6 @@ I Used Mongoose to manage schemas, validations, and queries
 ## Test History
 The test history will be dynamic—whenever a controller earns a certificate, it will be automatically recorded in their test history.
 
-## Certification database
-create a database to store a certifications earned by employees so the HR can manageit easly and the employees can downloadit 
-
 ## Certification Database
 A dedicated database will be created to store all certifications earned by employees. This will enable HR to manage them efficiently while allowing employees to download their certificates as needed.
 

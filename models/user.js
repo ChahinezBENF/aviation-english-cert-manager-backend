@@ -4,52 +4,71 @@ const bcrypt = require('bcrypt'); //bcrypt hash the password
 
 const UserSchema = new mongoose.Schema({
   name: { type: String, required: true, },
-  email: {type: String, required: true, unique: true, match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
-  password: {type: String, required: true,},
-  role: {type: String,
+  email: { type: String, required: true, unique: true, match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+  password: { type: String, required: true, },
+  role: {
+    type: String,
     enum: ['controller', 'pilot', 'hr'], // Role of the user
-    default: 'controller',},
+    default: 'controller',
+  },
   certification: {
-      level: { type: Number,   enum: [1 ,2 ,3 ,4 , 5, 6], // ICAO certification levels
-              required: function () {return this.role === 'controller' || this.role === 'pilot';},},
-      dateIssued: { type: Date,},
-      expiresOn: { type: Date },
-      certificateUrl: { type: String,}, // URL for uploaded certificate
-               },
+    level: {
+      type: Number, enum: [1, 2, 3, 4, 5, 6], // ICAO certification levels
+      required: function () { return this.role === 'controller' || this.role === 'pilot'; },
+    },
+    dateIssued: { type: Date, },
+    expiresOn: { type: Date },
+    certificateUrl: { type: String, }, // URL for uploaded certificate
+  },
   airportCode: {
     type: String, // Associated airport (ICAO code)
     required: function () { return this.role === 'controller' || this.role === 'pilot'; },
-               },
-  testHistory: [
-    { testDate: {type: Date, },
-      resultLevel: {type: Number,}, // Certification level achieved in the test   
-    },],
-},
-{
-  toJSON: {
-    transform: (doc, ret) => {
-      // Remove internal fields
-      delete ret.__v;
-
-
-      // Reorder fields
-      return {
-        _id: ret._id,
-        name: ret.name,
-        email: ret.email,
-        password :ret.password,
-        role: ret.role,
-        certification: ret.certification,
-        airportCode: ret.airportCode,
-        testHistory: ret.testHistory,
-        createdAt: ret.createdAt,
-        updatedAt: ret.updatedAt,
-      };
-    },
   },
+  testHistory: [
+    {
+      testDate: { type: Date, },
+      resultLevel: { type: Number, }, // Certification level achieved in the test   
+    },],
+  testSchedule: [
+    {
+      testDate: {
+        type: Date,
+        required: true,
+        validate: {
+          validator: function (value) { return value >= new Date(); },
+          message: 'Test date must be in the future.',
+        },
+      },// Date of the scheduled test
+      testName: { type: String, required: true }, // Name or description of the test
+    },
+  ],
+},
+  {
+    toJSON: {
+      transform: (doc, ret) => {
+        // Remove internal fields
+        delete ret.__v;
 
-  
-});
+
+        // Reorder fields
+        return {
+          _id: ret._id,
+          name: ret.name,
+          email: ret.email,
+          password: ret.password,
+          role: ret.role,
+          certification: ret.certification,
+          airportCode: ret.airportCode,
+          testHistory: ret.testHistory,
+          testSchedule: ret.testSchedule,
+          createdAt: ret.createdAt,
+          updatedAt: ret.updatedAt,
+        };
+      },
+    },
+
+
+  });
 
 // Pre-save hook to calculate certification expiration date
 //For creation

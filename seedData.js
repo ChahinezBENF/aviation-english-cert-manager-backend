@@ -1,5 +1,5 @@
 require('dotenv').config();
-const mongoose = require('./db/conn'); 
+const mongoose = require('./db/conn');
 const User = require('./models/user'); // Import User model
 const Airport = require('./models/airport'); // Import Airport model
 const bcrypt = require('bcrypt');
@@ -69,6 +69,20 @@ const seedData = async () => {
         controllers: [],
         pilots: [],
       },
+      {
+        code: 'MIA',
+        name: 'Miami International Airport',
+        location: { city: 'Miami', country: 'USA' },
+        controllers: [],
+        pilots: [],
+      },
+      {
+        code: 'PHX',
+        name: 'Phoenix Sky Harbor International Airport',
+        location: { city: 'Phoenix', country: 'USA' },
+        controllers: [],
+        pilots: [],
+      },
     ];
     const airports = await Airport.insertMany(airportData);
 
@@ -82,7 +96,6 @@ const seedData = async () => {
         certification: {
           level: 4,
           dateIssued: new Date('2024-01-01'), // Matches the successful testDate
-          expiresOn: new Date('2026-01-01'),
           certificateUrl: 'https://example.com/certificate.pdf',
         },
         airportCode: 'JFK',
@@ -99,7 +112,6 @@ const seedData = async () => {
         certification: {
           level: 5,
           dateIssued: new Date('2018-01-01'), // Matches the successful testDate
-          expiresOn: new Date('2024-01-01'),
           certificateUrl: 'https://example.com/certificate2.pdf',
         },
         airportCode: 'KLAX',
@@ -109,6 +121,37 @@ const seedData = async () => {
         ],
       },
       {
+  name: 'Alice Johnson',
+  email: 'alice.johnson@example.com',
+  password: await bcrypt.hash('alice_1234', 10), // Hashed password
+  role: 'controller',
+  certification: {
+    level: 3,
+    dateIssued: new Date('2023-06-15'),
+    certificateUrl: 'https://example.com/certificate3.pdf',
+  },
+  airportCode: 'MIA',
+  testHistory: [
+    { testDate: new Date('2023-05-01'), resultLevel: 2 }, // Failed test
+    { testDate: new Date('2023-06-15'), resultLevel: 3 }, // Passed test
+  ],
+},
+{
+  name: 'Bob Miller',
+  email: 'bob.miller@example.com',
+  password: await bcrypt.hash('bob_1234', 10), // Hashed password
+  role: 'pilot',
+  certification: {
+    level: 4,
+    dateIssued: new Date('2019-10-01'),
+    certificateUrl: 'https://example.com/certificate4.pdf',
+  },
+  airportCode: 'PHX',
+  testHistory: [
+    { testDate: new Date('2019-09-15'), resultLevel: 4 }, // Passed test
+  ],
+},
+      {
         name: 'HR Admin',
         email: 'hr.admin@example.com',
         password: await bcrypt.hash('hr_password', 10), // Hashed password
@@ -117,12 +160,13 @@ const seedData = async () => {
         airportCode: null, // Not tied to a specific airport
         testHistory: [], // No test history for HR
       },
+      
     ]);
 
     const users = await User.insertMany(userData);
 
-     // Link users to their respective airports(HR not included)
-     const airportUpdates = await Promise.all(
+    // Link users to their respective airports(HR not included)
+    const airportUpdates = await Promise.all(
       users.map(async (user) => {
         const airport = airports.find((a) => a.code === user.airportCode);
         if (airport) {
@@ -133,9 +177,9 @@ const seedData = async () => {
           }
           return airport.save();
         }
-        if (user.role !== 'hr'){
-        throw new Error(`No matching airport found for code: ${user.airportCode}`);
-      }
+        if (user.role !== 'hr') {
+          throw new Error(`No matching airport found for code: ${user.airportCode}`);
+        }
       })
     );
 
